@@ -1,5 +1,5 @@
 {
-    "name": "floodedcodeboy/world-weather-online",
+    "name": "floodedcodeboy/world-weather-online-laravel",
     "description": "Allows for easy usage of the Weather Online api in your Laravel application. Currently only the premium API is supported.",
     "keywords": ["laravel","laravel 4","weather","online","world"],
     "type": "library",
