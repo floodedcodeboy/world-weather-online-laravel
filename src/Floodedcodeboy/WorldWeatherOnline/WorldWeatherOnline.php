@@ -1,8 +1,6 @@
-<?php
+<?php namespace Floodedcodeboy\WorldWeatherOnline;
 
-namespace Floodedcodeboy\WorldWeatherOnline
-
-class Weather
+class WorldWeatherOnline
 {
 
     public static function hello() {
@@ -81,7 +79,7 @@ class Weather
             $weather = json_decode($weather);
             $current_conditions = $weather->data->current_condition[0];
             $temperature = $weather->data->current_condition[0]['temp_C'];
-            return $temperature
+            return $temperature;
         }
     }
         
