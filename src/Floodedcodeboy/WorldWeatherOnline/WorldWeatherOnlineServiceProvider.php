@@ -18,7 +18,7 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('floodedcodeboy/world-weather-online');
+		$this->package('floodedcodeboy/world-weather-online-laravel');
 	}
 
 	/**
@@ -29,6 +29,9 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		//
+		$this->app['weather'] = $this->app->share(function($app){
+			return new Weather;
+		});
 	}
 
 	/**

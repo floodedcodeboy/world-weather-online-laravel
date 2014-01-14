@@ -5,6 +5,10 @@ namespace Floodedcodeboy\WorldWeatherOnline
 class Weather
 {
 
+    public static function hello() {
+        return 'howdy';
+    }
+
     public static function curl($url) {
         //Setup curl request
         $ch = curl_init();
