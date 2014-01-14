@@ -59,7 +59,7 @@ class WorldWeatherOnline
 
     public static function current_conditions($latitude, $longitude) 
     {
-        $weather = get_weather($latitude, $longitude);
+        $weather = Weather::get_weather($latitude, $longitude);
         if($weather == FALSE) {
             return false;
         } else {
