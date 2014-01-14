@@ -32,6 +32,12 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 		$this->app['weather'] = $this->app->share(function($app){
 			return new Weather;
 		});
+
+		// Allow alias to work without amending app config file.
+		$this->app->booting(function() {
+			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+			$loader->alias('Weather', 'Floodedcodeboy\WorldWeatherOnline\Facades\WorldWeatherOnline')
+		});
 	}
 
 	/**
