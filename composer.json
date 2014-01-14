@@ -1,0 +1,26 @@
+{
+    "name": "mcsaatchi/world-weather-online",
+    "description": "Allows for easy usage of the Weather Online api in your Laravel application. Currently only the premium API is supported.",
+    "keywords": ["laravel","laravel 4","weather","online","world"],
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Jacob Carthew-Gabriel",
+            "email": "jacob.gabriel@mcsaatchi.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Mcsaatchi\\WorldWeatherOnline\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
