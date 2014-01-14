@@ -33,10 +33,10 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 			return new Weather;
 		});
 
-		// Allow alias to work without amending app config file.
+		// Allow alias to work without amendinghttp://46.137.140.1/ app config file.
 		$this->app->booting(function() {
 			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-			$loader->alias('Weather', 'Floodedcodeboy\WorldWeatherOnline\Facades\WorldWeatherOnline')
+			$loader->alias('Weather', 'Floodedcodeboy\WorldWeatherOnline\Facades\WorldWeatherOnline');
 		});
 	}
 
