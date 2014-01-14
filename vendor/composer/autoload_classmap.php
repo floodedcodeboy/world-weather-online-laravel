@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Mcsaatchi\\WorldWeatherOnline\\WorldWeatherOnlineServiceProvider' => $baseDir . '/src/Mcsaatchi/WorldWeatherOnline/WorldWeatherOnlineServiceProvider.php',
+    'Floodedcodeboy\\WorldWeatherOnline\\WorldWeatherOnlineServiceProvider' => $baseDir . '/src/Floodedcodeboy/WorldWeatherOnline/WorldWeatherOnlineServiceProvider.php',
 );

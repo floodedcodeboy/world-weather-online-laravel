@@ -1,6 +1,6 @@
 <?php
 
-namespace Mcsaatchi\WorldWeatherOnline
+namespace Floodedcodeboy\WorldWeatherOnline
 
 class Weather
 {

@@ -1,4 +1,4 @@
-<?php namespace Mcsaatchi\WorldWeatherOnline;
+<?php namespace Floodedcodeboy\WorldWeatherOnline;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +18,7 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('mcsaatchi/world-weather-online');
+		$this->package('floodedcodeboy/world-weather-online');
 	}
 
 	/**
