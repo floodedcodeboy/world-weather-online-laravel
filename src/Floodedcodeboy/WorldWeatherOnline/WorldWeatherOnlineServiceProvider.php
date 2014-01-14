@@ -29,8 +29,8 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		//
-		$this->app['worldweatheronlne'] = $this->app->share(function($app){
-			return new Weather;
+		$this->app['worldweatheronline'] = $this->app->share(function($app){
+			return new WorldWeatherOnline;
 		});
 
 		// Allow alias to work without amendinghttp://46.137.140.1/ app config file.
