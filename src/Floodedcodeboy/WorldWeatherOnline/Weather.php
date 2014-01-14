@@ -4,13 +4,8 @@ namespace Floodedcodeboy\WorldWeatherOnline
 
 class Weather
 {
-    public static function free($latitude, $longitude, $days = 1, $format = 'json') 
-    {
-        // load api key
-        $api_key = Config::get('weather.api_key');
 
-        $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude.",".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
-
+    public static function curl($url) {
         //Setup curl request
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -30,7 +25,16 @@ class Weather
             curl_close($ch);
             return $weather;
         }
+    }
 
+    public static function free($latitude, $longitude, $days = 1, $format = 'json') 
+    {
+        // load api key
+        $api_key = Config::get('weather.api_key');
+
+        $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude.",".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
+
+        return Weather::curl($url);
     }
 
     public static function paid($latitude, $longitude, $days = 1, $format = 'json') {
@@ -39,29 +43,7 @@ class Weather
 
         $url = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?q=' . $latitude . '%2C' . $longitude . '&format='.$format.'&num_of_days='.$days.'&key='. $api_key;
 
-        //Setup curl request
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        $weather = curl_exec($ch);
-
-        //Catch errors
-        if(curl_errno($ch)) {
-            //$errors = curl_error($ch);
-            curl_close($ch);
-            return false;
-        }
-        else {
-            curl_close($ch);
-            return $weather;
-        }
-        
-        
-        //return getForecast($temperature);
-
+        return Weather::curl($url);//return getForecast($temperature);
     }
 
     public static function get_weather($latitude, $longitude) {
