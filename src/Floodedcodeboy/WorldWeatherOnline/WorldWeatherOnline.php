@@ -1,5 +1,7 @@
 <?php namespace Floodedcodeboy\WorldWeatherOnline;
 
+use Config;
+
 class WorldWeatherOnline
 {
 
@@ -36,7 +38,7 @@ class WorldWeatherOnline
 
         $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude.",".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
 
-        return Weather::curl($url);
+        return WorldWeatherOnline::curl($url);
     }
 
     public static function paid($latitude, $longitude, $days = 1, $format = 'json') {
@@ -45,21 +47,21 @@ class WorldWeatherOnline
 
         $url = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?q=' . $latitude . '%2C' . $longitude . '&format='.$format.'&num_of_days='.$days.'&key='. $api_key;
 
-        return Weather::curl($url);//return getForecast($temperature);
+        return WorldWeatherOnline::curl($url);//return getForecast($temperature);
     }
 
     public static function get_weather($latitude, $longitude) {
         $account_type = Config::get('weather.account_type');
         if ($account_type == 'paid')
-            $weather = Weather::paid($latitude, $longitude);
+            $weather = WorldWeatherOnline::paid($latitude, $longitude);
         else
-            $weather = Weather::free($latitude, $longitude);
+            $weather = WorldWeatherOnline::free($latitude, $longitude);
         return $weather;
     }
 
     public static function current_conditions($latitude, $longitude) 
     {
-        $weather = Weather::get_weather($latitude, $longitude);
+        $weather = WorldWeatherOnline::get_weather($latitude, $longitude);
         if($weather == FALSE) {
             return false;
         } else {
@@ -72,7 +74,7 @@ class WorldWeatherOnline
     public static function current_temp($latitude, $longtitude)
     {
         $units = Config::get('weather.units');
-        $weather = get_weather($latitude, $longitude);
+        $weather = WorldWeatherOnline::get_weather($latitude, $longitude);
         if($weather == FALSE) {
             return false;
         } else {
