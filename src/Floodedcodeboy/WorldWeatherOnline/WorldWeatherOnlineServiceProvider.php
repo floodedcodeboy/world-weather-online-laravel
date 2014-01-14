@@ -29,7 +29,7 @@ class WorldWeatherOnlineServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		//
-		$this->app['weather'] = $this->app->share(function($app){
+		$this->app['worldweatheronlne'] = $this->app->share(function($app){
 			return new Weather;
 		});
 
