@@ -35,7 +35,7 @@ class WorldWeatherOnline
     {
         // load api key
         $api_key = Config::get('world-weather-online-laravel::key');
-        $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude.",".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
+        $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude."%2C".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
 
         return WorldWeatherOnline::curl($url);
     }
