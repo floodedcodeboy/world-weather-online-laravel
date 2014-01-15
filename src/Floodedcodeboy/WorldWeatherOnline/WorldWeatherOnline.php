@@ -34,8 +34,7 @@ class WorldWeatherOnline
     public static function free($latitude, $longitude, $days = 1, $format = 'json') 
     {
         // load api key
-        $api_key = Config::get('weather.api_key');
-
+        $api_key = Config::get('world-weather-online-laravel::key');
         $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude.",".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
 
         return WorldWeatherOnline::curl($url);
@@ -43,15 +42,14 @@ class WorldWeatherOnline
 
     public static function paid($latitude, $longitude, $days = 1, $format = 'json') {
         // load api key
-        $api_key = Config::get('weather.api_key');
-
+        $api_key = Config::get('world-weather-online-laravel::key');
         $url = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?q=' . $latitude . '%2C' . $longitude . '&format='.$format.'&num_of_days='.$days.'&key='. $api_key;
 
         return WorldWeatherOnline::curl($url);//return getForecast($temperature);
     }
 
     public static function get_weather($latitude, $longitude) {
-        $account_type = Config::get('weather.account_type');
+        $account_type = Config::get('world-weather-online-laravel::account_type');
         if ($account_type == 'paid')
             $weather = WorldWeatherOnline::paid($latitude, $longitude);
         else
@@ -73,7 +71,7 @@ class WorldWeatherOnline
 
     public static function current_temp($latitude, $longtitude)
     {
-        $units = Config::get('weather.units');
+        $units = Config::get('world-weather-online-laravel::units');
         $weather = WorldWeatherOnline::get_weather($latitude, $longitude);
         if($weather == FALSE) {
             return false;
