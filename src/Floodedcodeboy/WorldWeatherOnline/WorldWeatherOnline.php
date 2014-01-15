@@ -69,7 +69,7 @@ class WorldWeatherOnline
         }
     }
 
-    public static function current_temp($latitude, $longtitude)
+    public static function current_temp($latitude, $longitude)
     {
         $units = Config::get('world-weather-online-laravel::units');
         $weather = WorldWeatherOnline::get_weather($latitude, $longitude);
