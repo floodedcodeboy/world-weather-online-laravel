@@ -21,7 +21,7 @@ class WorldWeatherOnline
 
         //If the JSON decode failed
         if(!$weather) {
-            throw new \Exception('Weather lookup failed. Response: '.$weatherJSON, 101);
+            throw new \Exception('Weather lookup failed. Response: '.$weatherJSON, 102);
         }
 
         //If there is an error message then something went wrong, throw the exception back.
@@ -30,7 +30,7 @@ class WorldWeatherOnline
             foreach($weather->data->error as $error) {
                 $msg .= $error->msg.' ';
             }
-            throw new \Exception('Weather lookup failed. '.$msg, 102);
+            throw new \Exception('Weather lookup failed. '.$msg, 103);
         }
 
         return true;
