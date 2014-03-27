@@ -4,11 +4,39 @@ use Config;
 
 class WorldWeatherOnline
 {
+    //URLs correct on 27/03/2014
+    public static $apiURL = array(
+        'free' => 'http://api.worldweatheronline.com/free/v1/weather.ashx?q=',
+        'paid' => 'http://api.worldweatheronline.com/premium/weather.ashx?q='
+        );
 
-    public static function hello() {
-        return 'howdy';
+    //Expects the JSON output from World Weather Online
+    public static function validateData($weatherJSON) {
+        if(!$weatherJSON) {
+            throw new \Exception('Weather lookup failed. Response empty.', 101);
+        }
+
+        //Try and decode it
+        $weather = json_decode($weatherJSON);
+
+        //If the JSON decode failed
+        if(!$weather) {
+            throw new \Exception('Weather lookup failed. Response: '.$weatherJSON, 102);
+        }
+
+        //If there is an error message then something went wrong, throw the exception back.
+        if($weather && !empty($weather->data->error)) {
+            $msg = '';
+            foreach($weather->data->error as $error) {
+                $msg .= $error->msg.' ';
+            }
+            throw new \Exception('Weather lookup failed. '.$msg, 103);
+        }
+
+        return true;
     }
 
+    //Helper method to curl to the url
     public static function curl($url) {
         //Setup curl request
         $ch = curl_init();
@@ -31,56 +59,49 @@ class WorldWeatherOnline
         }
     }
 
-    public static function free($latitude, $longitude, $days = 1, $format = 'json') 
-    {
-        // load api key
-        $api_key = Config::get('world-weather-online-laravel::key');
-        $url = "http://free.worldweatheronline.com/feed/weather.ashx?q=".$latitude."%2C".$longitude."&format=".$format."&num_of_days=".$days."&key=".$api_key;
-
-        return WorldWeatherOnline::curl($url);
-    }
-
-    public static function paid($latitude, $longitude, $days = 1, $format = 'json') {
-        // load api key
-        $api_key = Config::get('world-weather-online-laravel::key');
-        $url = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?q=' . $latitude . '%2C' . $longitude . '&format='.$format.'&num_of_days='.$days.'&key='. $api_key;
-
-        return WorldWeatherOnline::curl($url);//return getForecast($temperature);
-    }
-
-    public static function get_weather($latitude, $longitude) {
+    //Call to get the raw weather from the API
+    public static function get_weather($location, $days = 1, $format = 'json') {
+        //These are set in the config.php file in the package
         $account_type = Config::get('world-weather-online-laravel::account_type');
-        if ($account_type == 'paid')
-            $weather = WorldWeatherOnline::paid($latitude, $longitude);
-        else
-            $weather = WorldWeatherOnline::free($latitude, $longitude);
-        return $weather;
+        $api_key = Config::get('world-weather-online-laravel::key');
+
+        $apiURL = WorldWeatherOnline::$apiURL[$account_type];
+        $url = $apiURL. urlencode($location) . '&format=' . $format . '&num_of_days=' . $days . '&key=' . $api_key;
+
+        $weather = WorldWeatherOnline::curl($url);
+
+        //Try and validate the data. If it doesn't an exception will be thrown
+        WorldWeatherOnline::validateData($weather);
+
+        $weather = json_decode($weather);
+        $current_conditions = $weather->data->current_condition[0];
+
+        return $current_conditions;
     }
 
-    public static function current_conditions($latitude, $longitude) 
-    {
-        $weather = WorldWeatherOnline::get_weather($latitude, $longitude);
-        if($weather == FALSE) {
-            return false;
-        } else {
-            $weather = json_decode($weather);
-            $current_conditions = $weather->data->current_condition[0];
-            return $current_conditions;
-        }
+    //Returns the raw condition object
+    public static function current_conditions($location) {
+        return WorldWeatherOnline::get_weather($location);
     }
 
-    public static function current_temp($latitude, $longitude)
-    {
+    //Returns just the temperature
+    public static function current_temp($location) {
         $units = Config::get('world-weather-online-laravel::units');
-        $weather = WorldWeatherOnline::get_weather($latitude, $longitude);
-        if($weather == FALSE) {
-            return false;
-        } else {
-            $weather = json_decode($weather);
-            $current_conditions = $weather->data->current_condition[0];
-            $temperature = $weather->data->current_condition[0]['temp_C'];
-            return $temperature;
+
+        $temperature = false;
+
+        $current_conditions = WorldWeatherOnline::get_weather($location);
+
+        //Otherwise look for the most relevant condition and give that back
+        if(!empty($current_conditions) && !empty($current_conditions->temp_C)) {
+            if($units = 'metric') {
+                $temperature = $current_conditions->temp_C;
+            } else {
+                $temperature = $current_conditions->temp_F;
+            }
         }
+
+        return $temperature;
     }
-        
+
 }
