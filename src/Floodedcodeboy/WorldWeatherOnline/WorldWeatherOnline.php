@@ -42,9 +42,9 @@ class WorldWeatherOnline
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 2);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 2);
         $weather = curl_exec($ch);
 
         //Catch errors
@@ -74,14 +74,15 @@ class WorldWeatherOnline
         WorldWeatherOnline::validateData($weather);
 
         $weather = json_decode($weather);
-        $current_conditions = $weather->data->current_condition[0];
+        $current_conditions = $weather->data;
 
         return $current_conditions;
     }
 
     //Returns the raw condition object
     public static function current_conditions($location) {
-        return WorldWeatherOnline::get_weather($location);
+        $weather = WorldWeatherOnline::get_weather($location);
+        return $weather->current_condition[0];
     }
 
     //Returns just the temperature
@@ -90,7 +91,7 @@ class WorldWeatherOnline
 
         $temperature = false;
 
-        $current_conditions = WorldWeatherOnline::get_weather($location);
+        $current_conditions = WorldWeatherOnline::current_conditions($location);
 
         //Otherwise look for the most relevant condition and give that back
         if(!empty($current_conditions) && !empty($current_conditions->temp_C)) {
@@ -102,6 +103,7 @@ class WorldWeatherOnline
         }
 
         return $temperature;
+        
     }
 
 }
